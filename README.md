@@ -1,3 +1,3 @@
 # finalproject
-@Author Tyler J Sanders
+Author: Tyler J Sanders
 
