@@ -40,3 +40,9 @@ centers_df <- as.data.frame(centers)
 
 colnames(centers_df) <- c("lon", "lat")
 centers
+
+
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4688077/
+  
+  
