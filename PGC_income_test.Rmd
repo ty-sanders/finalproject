@@ -1,0 +1,63 @@
+---
+title: "PG County Income Test"
+author: "Tyler Sanders"
+date: "November 27, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+MD <- tracts(state = 'MD', county = "Prince George's County")
+plot(MD)
+
+income_data <- acs.fetch(endyear = 2012, 
+                         geography = geo.make(state = "MD", 
+                                              county = "Prince George's County",
+                                              tract = "*"),
+                         variable = "B19013_001")
+
+income_df <- data.frame(paste0(as.character(income_data@geography$state), 
+                               as.character(income_data@geography$county), 
+                               income_data@geography$tract), 
+                        income_data@estimate)
+
+colnames(income_df) <- c("GEOID", "hhincome")
+
+MD_merged <- geo_join(MD, income_df, "GEOID", "GEOID")
+
+pal <- colorQuantile("Greens", NULL, n = 6)
+
+popup <- paste0("HH Median Income: ", as.character(income_df$hhincome))
+
+leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = MD_merged, 
+              fillColor = ~pal(income_df$hhincome), 
+              fillOpacity = 0.7, 
+              weight = 0.2, 
+              smoothFactor = 0.2, 
+              popup = popup) %>%
+  addLegend(pal = pal, 
+            values = income_df$hhincome, 
+            position = "bottomright", 
+            title = "Income in PGC")                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
